@@ -14,11 +14,29 @@ Calm agents are agents equipped with an understanding of CALM principles through
 * Inform
 * Document peacefully
 
+## Best for Forward Deployed Engineers
+
+Forward Deployed Engineers often have to work in new customer environments where the above CALM principles are important in order to deliver solutions that can better fit the customer's existing environment and practices.
+
+Why is this important? Many reasons: 
+
+* Increase chance of the solution being sustained by existing teams
+* Reduce risk of the solution 
+* Better user experience, etc.
+
+It is always easy to implement a greenfield solution ala "bulldozer mode", i.e. just get it done. It is very tempting. After all, it is a MVP and it is more important to show impact either of the time spent or the platform/software being adopted as part of the "on-ramp" to the rapid solutioning capability of the FDE.
+
+However, the time at which the FDE is introduced within an organization many times coincides with the juncture at which it is most important to have a pathway to managed production (Day 2) already figured out.
+
+The FDe often has to navigate these complexities too and it is the goal of the CALM skill(s) in this project help the FDE's agents create solutions that will have a higher chance of succeeding sustainably within an organization's IT / software /SDLC ecosystem.
+
 ## What does the principles mean in practice, in the context of an agent with the CALM skill?
 
 Before you do anything, take a deep breath (virtually if you must) and stay CALM.
 
 First, look around you. Understand the nature, state, and characteristics of the project. And RESPECT it. Take it in within your context of execution. First look at the wiki / knowledge / collaboration workspace to get a high-level understanding of the project. If there is a project management tool in place in the project, have a look at the recent tasks. 
+
+> Why is this important? The skill encourages agents (and flags it out if it doesn't) to look at context at the level of the organization / Enterprise. Inspecting the code-base, or documentation alone may not suffice to achieve the objectives of CALM, which is to create solutions that can smoothly ease into production
 
 If you cannot assemble a high-level understanding of the project from project meta tools (no other agents/skills/sources available), you will need to REFER. Ask the human(s)/team in your execution window, or through any communication channel that are available to you. Only resort to codebase inference as a last resort, as the codebase itself may not be clearly documented in the first place, and any assumptions will disrupt the CALM. 
 
