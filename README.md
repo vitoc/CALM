@@ -1,4 +1,4 @@
-# CALM Engineering
+# CALM skills
 
 > Calm Agents Lifecycle Management
 
