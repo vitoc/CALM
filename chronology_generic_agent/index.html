@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plant Timeline</title>
+  <script>
+    (() => {
+      const param = new URLSearchParams(window.location.search).get("scoutTheme");
+      const theme =
+        param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --cp-bg: #f7f4ef;
+      --cp-bg-elevated: #fcfbf8;
+      --cp-surface: #ffffff;
+      --cp-surface-soft: #f5f5f5;
+      --cp-border: #dedede;
+      --cp-border-strong: #919191;
+      --cp-text: #242424;
+      --cp-text-muted: #5c5c5c;
+      --cp-text-soft: #6f6f6f;
+      --cp-accent: #b11f4b;
+      --cp-accent-hover: #9a1a41;
+      --cp-accent-soft: rgba(177, 31, 75, 0.08);
+      --cp-accent-fg: #ffffff;
+      --cp-success: #16a34a;
+      --cp-danger: #dc2626;
+      --cp-warning: #f59e0b;
+      --cp-link: #0078d4;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+      --cp-overlay: rgba(255, 255, 255, 0.8);
+      --cp-panel: rgba(255, 255, 255, 0.86);
+      --cp-panel-strong: rgba(255, 255, 255, 0.96);
+      --cp-sheen: rgba(255, 255, 255, 0.55);
+      --cp-highlight: rgba(177, 31, 75, 0.12);
+    }
+
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --cp-bg: #3d3b3a;
+      --cp-bg-elevated: #343231;
+      --cp-surface: #292929;
+      --cp-surface-soft: #2e2e2e;
+      --cp-border: #474747;
+      --cp-border-strong: #5f5f5f;
+      --cp-text: #dedede;
+      --cp-text-muted: #919191;
+      --cp-text-soft: #b0b0b0;
+      --cp-accent: #fd8ea1;
+      --cp-accent-hover: #fb7b91;
+      --cp-accent-soft: rgba(253, 142, 161, 0.14);
+      --cp-accent-fg: #1a1a1a;
+      --cp-success: #4ade80;
+      --cp-danger: #f87171;
+      --cp-warning: #fbbf24;
+      --cp-link: #4da6ff;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+      --cp-overlay: rgba(41, 41, 41, 0.88);
+      --cp-panel: rgba(41, 41, 41, 0.72);
+      --cp-panel-strong: rgba(41, 41, 41, 0.96);
+      --cp-sheen: rgba(255, 255, 255, 0.04);
+      --cp-highlight: rgba(253, 142, 161, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      background:
+        linear-gradient(90deg, transparent 0 49.9%, var(--cp-border) 50%, transparent 50.1%) top center / 100% 12rem no-repeat,
+        var(--cp-bg);
+      color: var(--cp-text);
+      font-family: "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .shell {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 48px;
+      align-items: end;
+      min-height: 25rem;
+      padding: 88px 0 56px;
+      border-bottom: 1px solid var(--cp-border-strong);
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0 0 20px;
+      color: var(--cp-accent);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      width: 32px;
+      height: 2px;
+      background: var(--cp-accent);
+      content: "";
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(3rem, 7vw, 6.6rem);
+      font-weight: 400;
+      line-height: 0.92;
+      letter-spacing: 0;
+    }
+
+    .summary {
+      max-width: 620px;
+      margin: 28px 0 0;
+      color: var(--cp-text-muted);
+      font-size: 1.05rem;
+      line-height: 1.65;
+    }
+
+    .date-mark {
+      min-width: 170px;
+      padding-left: 24px;
+      border-left: 1px solid var(--cp-border-strong);
+    }
+
+    .date-mark strong,
+    .date-mark span {
+      display: block;
+    }
+
+    .date-mark strong {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 3.5rem;
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .date-mark span {
+      margin-top: 8px;
+      color: var(--cp-text-muted);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .toolbar {
+      position: sticky;
+      z-index: 5;
+      top: 0;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 0;
+      background: var(--cp-overlay);
+      border-bottom: 1px solid var(--cp-border);
+      backdrop-filter: blur(12px);
+    }
+
+    .filters {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+
+    .filter {
+      flex: 0 0 auto;
+      padding: 8px 12px;
+      border: 1px solid var(--cp-border);
+      border-radius: 0.625rem;
+      background: var(--cp-surface);
+      color: var(--cp-text-muted);
+      cursor: pointer;
+      font-size: 0.82rem;
+      text-transform: capitalize;
+    }
+
+    .filter:hover {
+      border-color: var(--cp-border-strong);
+      color: var(--cp-text);
+    }
+
+    .filter[aria-pressed="true"] {
+      border-color: var(--cp-accent);
+      background: var(--cp-accent);
+      color: var(--cp-accent-fg);
+    }
+
+    .count {
+      flex: 0 0 auto;
+      color: var(--cp-text-muted);
+      font-family: Consolas, "Courier New", Courier, monospace;
+      font-size: 0.8rem;
+    }
+
+    main {
+      padding: 64px 0 96px;
+    }
+
+    .month {
+      display: grid;
+      grid-template-columns: 150px minmax(0, 1fr);
+      gap: 48px;
+      margin-bottom: 72px;
+    }
+
+    .month-heading {
+      position: sticky;
+      top: 88px;
+      align-self: start;
+      margin: 0;
+      color: var(--cp-text-muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .month-heading strong {
+      display: block;
+      margin-top: 5px;
+      color: var(--cp-text);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 2rem;
+      font-weight: 400;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .events {
+      position: relative;
+      display: grid;
+      gap: 16px;
+    }
+
+    .events::before {
+      position: absolute;
+      top: 8px;
+      bottom: 8px;
+      left: 17px;
+      width: 1px;
+      background: var(--cp-border-strong);
+      content: "";
+    }
+
+    .event {
+      position: relative;
+      display: grid;
+      grid-template-columns: 36px 78px minmax(0, 1fr);
+      gap: 20px;
+      align-items: start;
+      min-height: 112px;
+      padding: 20px 24px 20px 0;
+      border: 1px solid transparent;
+      border-bottom-color: var(--cp-border);
+      opacity: 0;
+      transform: translateY(10px);
+      animation: reveal 480ms ease forwards;
+    }
+
+    .event:hover {
+      background: var(--cp-surface);
+      border-color: var(--cp-border);
+      border-radius: 16px;
+      box-shadow: 0 0 2px var(--cp-border), 0 1px 2px var(--cp-border);
+    }
+
+    .node {
+      position: relative;
+      z-index: 1;
+      width: 13px;
+      height: 13px;
+      margin: 5px 0 0 11px;
+      border: 3px solid var(--cp-bg);
+      border-radius: 50%;
+      background: var(--cp-accent);
+      box-shadow: 0 0 0 1px var(--cp-accent);
+    }
+
+    .event:hover .node {
+      border-color: var(--cp-surface);
+    }
+
+    time {
+      color: var(--cp-text-muted);
+      font-family: Consolas, "Courier New", Courier, monospace;
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+
+    time strong {
+      display: block;
+      color: var(--cp-text);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.85rem;
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .event-body h3 {
+      margin: 0;
+      font-size: 1.02rem;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    .type {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 14px;
+      color: var(--cp-text-soft);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .type::before {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--cp-accent);
+      content: "";
+    }
+
+    .empty {
+      padding: 80px 24px;
+      border: 1px dashed var(--cp-border-strong);
+      border-radius: 16px;
+      color: var(--cp-text-muted);
+      text-align: center;
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      padding: 28px 0 44px;
+      border-top: 1px solid var(--cp-border-strong);
+      color: var(--cp-text-muted);
+      font-size: 0.78rem;
+    }
+
+    @keyframes reveal {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .event {
+        opacity: 1;
+        transform: none;
+        animation: none;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .shell {
+        width: min(100% - 28px, 1120px);
+      }
+
+      header {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        min-height: auto;
+        padding: 64px 0 44px;
+      }
+
+      h1 {
+        font-size: 3.6rem;
+      }
+
+      .date-mark {
+        display: flex;
+        gap: 12px;
+        align-items: baseline;
+        padding: 16px 0 0;
+        border-top: 1px solid var(--cp-border);
+        border-left: 0;
+      }
+
+      .date-mark strong {
+        font-size: 2.2rem;
+      }
+
+      .month {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        margin-bottom: 56px;
+      }
+
+      .month-heading {
+        position: static;
+        display: flex;
+        gap: 8px;
+        align-items: baseline;
+      }
+
+      .event {
+        grid-template-columns: 32px 56px minmax(0, 1fr);
+        gap: 12px;
+        padding-right: 8px;
+      }
+
+      .events::before {
+        left: 15px;
+      }
+
+      .node {
+        margin-left: 9px;
+      }
+
+      footer {
+        gap: 12px;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div>
+        <p class="eyebrow">Plant Growth Timeline</p>
+        <h1>From seed<br>to flowering.</h1>
+        <p class="summary">A chronology of the stages of growth of a plant.</p>
+      </div>
+      <div class="date-mark" aria-label="Timeline period July to September 2026">
+        <strong>36</strong>
+        <span>days of growth<br>Jul – August 2026</span>
+      </div>
+    </header>
+
+    <nav class="toolbar" aria-label="Filter timeline by engagement type">
+      <div class="filters" id="filters"></div>
+      <div class="count" id="count" aria-live="polite"></div>
+    </nav>
+
+    <main id="timeline"></main>
+
+    <footer>
+      <span>Vito Chin</span>
+      <span>Made: 08 Sep 2026</span>
+    </footer>
+  </div>
+
+  <script>
+    const activities = [
+        {
+        "activity": "Seed",
+        "timestamp": "2026-07-08T10:00:00Z",
+        "type": "initiation"
+        },
+        {
+        "activity": "Sprouting",
+        "timestamp": "2026-07-14T10:00:00Z",
+        "type": "differentiation"
+        },
+        {
+        "activity": "Flowering",
+        "timestamp": "2026-08-23T10:00:00Z",
+        "type": "maturation"
+        }    
+    ];
+
+    const sortedActivities = [...activities].sort((first, second) =>
+      new Date(first.timestamp) - new Date(second.timestamp)
+    );
+    const types = [...new Set(sortedActivities.map((item) => item.type))];
+    const timeline = document.querySelector("#timeline");
+    const filterContainer = document.querySelector("#filters");
+    const count = document.querySelector("#count");
+    let activeType = "all";
+
+    function monthKey(date) {
+      return new Intl.DateTimeFormat("en", { month: "long", year: "numeric", timeZone: "UTC" }).format(date);
+    }
+
+    function createFilters() {
+      ["all", ...types].forEach((type) => {
+        const button = document.createElement("button");
+        button.className = "filter";
+        button.type = "button";
+        button.textContent = type;
+        button.setAttribute("aria-pressed", type === activeType ? "true" : "false");
+        button.addEventListener("click", () => {
+          activeType = type;
+          document.querySelectorAll(".filter").forEach((filter) => {
+            filter.setAttribute("aria-pressed", filter.textContent === activeType ? "true" : "false");
+          });
+          renderTimeline();
+        });
+        filterContainer.appendChild(button);
+      });
+    }
+
+    function renderTimeline() {
+      const visible = activeType === "all"
+        ? sortedActivities
+        : sortedActivities.filter((item) => item.type === activeType);
+      const grouped = Map.groupBy(visible, (item) => monthKey(new Date(item.timestamp)));
+
+      timeline.replaceChildren();
+      count.textContent = `${visible.length} stages${visible.length === 1 ? "" : "s"}`;
+
+      if (!visible.length) {
+        const empty = document.createElement("p");
+        empty.className = "empty";
+        empty.textContent = "No stage type match this filter.";
+        timeline.appendChild(empty);
+        return;
+      }
+
+      let eventIndex = 0;
+      grouped.forEach((items, month) => {
+        const section = document.createElement("section");
+        section.className = "month";
+        const [monthName, year] = month.split(" ");
+        const heading = document.createElement("h2");
+        heading.className = "month-heading";
+        heading.innerHTML = `${year}<strong>${monthName}</strong>`;
+
+        const events = document.createElement("div");
+        events.className = "events";
+        items.forEach((item) => {
+          const date = new Date(item.timestamp);
+          const article = document.createElement("article");
+          article.className = "event";
+          article.style.animationDelay = `${eventIndex * 45}ms`;
+
+          const node = document.createElement("span");
+          node.className = "node";
+          node.setAttribute("aria-hidden", "true");
+
+          const time = document.createElement("time");
+          time.dateTime = item.timestamp;
+          time.innerHTML = `<strong>${String(date.getUTCDate()).padStart(2, "0")}</strong>${date.toLocaleTimeString("en", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "UTC" })} UTC`;
+
+          const body = document.createElement("div");
+          body.className = "event-body";
+          const title = document.createElement("h3");
+          title.textContent = item.activity;
+          const type = document.createElement("span");
+          type.className = "type";
+          type.textContent = item.type;
+          body.append(title, type);
+
+          article.append(node, time, body);
+          events.appendChild(article);
+          eventIndex += 1;
+        });
+
+        section.append(heading, events);
+        timeline.appendChild(section);
+      });
+    }
+
+    createFilters();
+    renderTimeline();
+  </script>
+</body>
+</html>

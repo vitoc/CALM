@@ -1,0 +1,17 @@
+[
+    {
+        "activity": "Seed",
+        "timestamp": "2026-07-08T10:00:00Z",
+        "type": "initiation"
+    },
+    {
+        "activity": "Sprouting",
+        "timestamp": "2026-07-14T10:00:00Z",
+        "type": "differentiation"
+    },
+    {
+        "activity": "Flowering",
+        "timestamp": "2026-08-23T10:00:00Z",
+        "type": "maturation"
+    }    
+]
