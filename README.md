@@ -53,3 +53,9 @@ The core principles embedded in this CALM skill is applicable to any agents (or 
 * During the Research, Plan, Implement (RPI) phase.
 * For all specialized agent types: Entity generator, Azure DevOps, platform engineering, test, etc.
 * It is great for humans too!
+
+## Output comparison
+
+| Generic agent | HVE agents | HVE agents with CALM skill |
+| --- | --- | --- |
+| **Style definition:** Uses general-purpose defaults and adapts to the immediate prompt. | **Style definition:** Follows HVE-specific practices and delivery conventions. | **Style definition:** Follows HVE-specific practices while applying CALM principles to remain composed, respectful, informed, and well documented. |
