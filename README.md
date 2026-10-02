@@ -2,6 +2,8 @@
 
 > Calm Agents Lifecycle Management
 
+![CALM skills](./calm_skills_normal.png)
+
 CALM is a clearly defined set of principles designed to complement any SDLC practice to encourage a composed, controlled, and well-understood approach through the use of calm agents.
 
 Calm agents are agents equipped with an understanding of CALM principles through a standard skill package. With this skill, any action, generation or interaction that are performed by the agent (or humans through the agent) will maintain the collective calm of the project.
