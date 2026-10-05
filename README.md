@@ -238,3 +238,9 @@ record (ADR).
 | Generic agent | HVE agents | HVE agents with CALM skill |
 | --- | --- | --- |
 | **Style definition:** Uses general-purpose defaults and adapts to the immediate prompt. | **Style definition:** Follows HVE-specific practices and delivery conventions. | **Style definition:** Follows HVE-specific practices while applying CALM principles to remain composed, respectful, informed, and well documented. |
+
+## Examples
+
+Refer to user, when a context cannot be found:
+
+![Refer](./example_refer.png)
